@@ -9,8 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private int jumpForce;
     private float horizontal;
     private bool isFacingRight;
-
-    private float y;
+    private bool isJumping;
 
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
@@ -22,8 +21,6 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-
-        y = transform.position.y;
     }
 
     private void Update()
@@ -56,15 +53,35 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded())
+        if (!Input.GetKey(KeyCode.Space) && isGrounded())
         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            anim.SetBool("jump", transform.position.y > y);
+            isJumping = false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isGrounded() || isJumping)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                anim.SetTrigger("jump");
+
+                if (isJumping)
+                {
+                    anim.SetTrigger("jump");
+                }
+
+                isJumping = !isJumping;
+            }
         }
     }
 
     private bool isGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.5f, groundLayer);
+    }
+
+    public bool canAttack()
+    {
+        return horizontal == 0 && isGrounded();
     }
 }
