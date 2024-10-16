@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Teleport : MonoBehaviour
 {
@@ -13,10 +14,11 @@ public class Teleport : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
     }
 
-    public void Tele()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            SceneManager.LoadScene(2);
+        }
     }
-
-
 }

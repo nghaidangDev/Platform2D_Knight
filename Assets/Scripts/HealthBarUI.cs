@@ -7,7 +7,7 @@ public class HealthBarUI : MonoBehaviour
 {
     public static HealthBarUI instance;
     [SerializeField] private Image currentHealthImg;
-    private float currentHealth = 100;
+    public float currentHealth = 100;
 
     private void Awake()
     {

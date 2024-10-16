@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Bomb
   layers:
   - Default
   - TransparentFX
@@ -12,7 +13,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Bomb
   - 
   - 
   - 
@@ -49,4 +50,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 379685111
+    locked: 0
+  - name: Bomb
+    uniqueID: 641166563
     locked: 0
