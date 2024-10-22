@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private int speed;
-    [SerializeField] private int jumpForce;
     private float horizontal;
-    private bool isFacingRight;
-    private bool isJumping;
 
-    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float speed;
+
+    [SerializeField] private float checkRadiousGrounded;
+
+    private bool isGrounded;
+    private bool isFacingRight;
+    private bool canJump;
+
+    [SerializeField] private Transform checkGround;
     [SerializeField] private LayerMask groundLayer;
 
     private Rigidbody2D rb;
@@ -25,19 +29,30 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        PlayerMove();
-        Jump();
+        CanMovement();
+        UpdateAnimations();
         Flip();
     }
 
-    private void PlayerMove()
+    private void Start()
     {
-        horizontal = Input.GetAxis("Horizontal");
+        CheckAnyThing();
+    }
 
-        rb.velocity = new Vector2 (horizontal * speed, rb.velocity.y);
+    private void UpdateAnimations()
+    {
+        anim.SetBool("move", horizontal != 0);
+    }
 
-        anim.SetBool("walk", horizontal != 0);
+    private void CanMovement()
+    {
+        canJump = true;
+        horizontal = Input.GetAxisRaw("Horizontal");
 
+        if (isGrounded)
+        {
+            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        }
     }
 
     private void Flip()
@@ -46,42 +61,18 @@ public class PlayerMovement : MonoBehaviour
         {
             isFacingRight = !isFacingRight;
             Vector2 localScale = transform.localScale;
-            localScale.x *= -1f;
+            localScale.x *= -1;
             transform.localScale = localScale;
         }
     }
 
-    private void Jump()
+    private void CheckAnyThing()
     {
-        if (!Input.GetKey(KeyCode.Space) && isGrounded())
-        {
-            isJumping = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (isGrounded() || isJumping)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-                anim.SetTrigger("jump");
-
-                if (isJumping)
-                {
-                    anim.SetTrigger("jump");
-                }
-
-                isJumping = !isJumping;
-            }
-        }
+        isGrounded = Physics2D.OverlapCircle(checkGround.position, checkRadiousGrounded, groundLayer);
     }
 
-    private bool isGrounded()
+    private void OnDrawGizmos()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.5f, groundLayer);
-    }
-
-    public bool canAttack()
-    {
-        return horizontal == 0 && isGrounded();
+        Gizmos.DrawSphere(checkGround.position, checkRadiousGrounded);
     }
 }
