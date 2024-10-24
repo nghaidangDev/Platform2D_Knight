@@ -12,14 +12,14 @@ TagManager:
   - 
   - Water
   - UI
+  - 
+  - Trap
+  - 
+  - 
   - Ground
-  - Bomb
+  - 
   - Player
   - Enemy
-  - 
-  - 
-  - 
-  - 
   - 
   - 
   - 
@@ -42,6 +42,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Trap
+    uniqueID: 641166563
+    locked: 0
   - name: Ground
     uniqueID: 2221364521
     locked: 0
@@ -50,7 +53,4 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 379685111
-    locked: 0
-  - name: Bomb
-    uniqueID: 641166563
     locked: 0
