@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool isFacingRight;
     private bool canJumpDouble;
+    private bool canMove = true;
 
     [SerializeField] private Transform checkGround;
     [SerializeField] private Transform checkAttack;
@@ -54,12 +55,15 @@ public class PlayerController : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
 
-        rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        if (canMove)
+        {
+            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+        }
     }
 
     private void CanJump()
     {
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (Input.GetButtonDown("Jump") && isGrounded && canMove)
         {
             rb.velocity = new Vector2(rb.velocity.x, forceJump);
         }
@@ -102,6 +106,16 @@ public class PlayerController : MonoBehaviour
             localScale.x *= -1;
             transform.localScale = localScale;
         }
+    }
+
+    public void DisableMove()
+    {
+        canMove = false;
+    }
+
+    public void EnableMove()
+    {
+        canMove = true;
     }
 
     private void CheckJumpDouble()
