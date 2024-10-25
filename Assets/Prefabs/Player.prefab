@@ -108,7 +108,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 379685111
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -588110308, guid: 10964885529445a4d9a8e542e207a70c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -225,10 +225,10 @@ MonoBehaviour:
   checkAttack: {fileID: 3031039798418186466}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1024
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 8192
 --- !u!1 &2052988693009603103
 GameObject:
   m_ObjectHideFlags: 0
