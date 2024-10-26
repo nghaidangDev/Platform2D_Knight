@@ -22,6 +22,7 @@ public class Traps : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             StartCoroutine(WaitExplode());
+            FindObjectOfType<AudioManager>().Play("Bomb");
         }
     }
 

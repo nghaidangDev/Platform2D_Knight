@@ -36,10 +36,12 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
+
         if (rb == null) Debug.LogError("Rigidbody2D is missing!");
         if (anim == null) Debug.LogError("Animator is missing!");
         if (audioManager == null) Debug.LogError("AudioManager is missing!");
         if (checkGround == null || checkAttack == null) Debug.LogError("CheckGround or CheckAttack is missing!");
+
     }
 
 
@@ -66,7 +68,7 @@ public class PlayerController : MonoBehaviour
         if (canMove)
         {
             rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
-            //audioManager.PlaySFX(audioManager.walking);
+            FindObjectOfType<AudioManager>().Play("Walk");
         }
     }
 
@@ -75,7 +77,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded && canMove)
         {
             rb.velocity = new Vector2(rb.velocity.x, forceJump);
-            //audioManager.PlaySFX(audioManager.jumping);
+            FindObjectOfType<AudioManager>().Play("Jump");
         }
     }
 
@@ -94,7 +96,7 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Attack");
                 coolDownTimer = attackTimer;
                 anim.SetTrigger("attack");
-                //audioManager.PlaySFX(audioManager.attack);
+                FindObjectOfType<AudioManager>().Play("Attack");
             }
         }
         else
