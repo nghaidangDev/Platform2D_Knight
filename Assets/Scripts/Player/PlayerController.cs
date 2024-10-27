@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float forceJump;
     [SerializeField] private float attackTimer;
+    [SerializeField] private float damaged;
 
     [SerializeField] private float checkRadiousGrounded;
     [SerializeField] private float checkRadiousAttacked;
@@ -91,9 +92,10 @@ public class PlayerController : MonoBehaviour
 
                 foreach (Collider2D collider in enemyInRange)
                 {
-                    //Take damage
+                    Health.instance.TakeDamage(damaged);
+                    Debug.Log("Attack");
                 }
-                Debug.Log("Attack");
+
                 coolDownTimer = attackTimer;
                 anim.SetTrigger("attack");
                 FindObjectOfType<AudioManager>().Play("Attack");

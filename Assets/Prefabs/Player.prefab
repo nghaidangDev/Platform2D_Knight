@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1026062383338442763}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 2310248875364946296}
   - component: {fileID: 6467263901477785857}
   - component: {fileID: 117158269762289614}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -219,6 +219,7 @@ MonoBehaviour:
   speed: 10
   forceJump: 15
   attackTimer: 1
+  damaged: 20
   checkRadiousGrounded: 0.25
   checkRadiousAttacked: 0.6
   checkGround: {fileID: 1026062383338442763}
@@ -238,7 +239,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3031039798418186466}
-  m_Layer: 8
+  m_Layer: 12
   m_Name: AttackCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}

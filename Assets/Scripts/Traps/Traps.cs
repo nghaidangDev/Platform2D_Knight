@@ -55,6 +55,9 @@ public class Traps : MonoBehaviour
 
         anim.SetTrigger("exploded");
         CheckRangeExplode();
+
+        yield return new WaitForSeconds(0.5f);
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmos()
