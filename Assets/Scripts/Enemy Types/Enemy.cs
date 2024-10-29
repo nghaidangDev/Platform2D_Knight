@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float radiousInRange;
     [SerializeField] private float attackTimer;
+    [SerializeField] private float damaged;
 
     private float nearDistance = 0.2f;
     private float coolDownTimer = 0f;
@@ -66,7 +67,7 @@ public class Enemy : MonoBehaviour
         anim.SetBool("walk", isWalking);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -75,7 +76,7 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
@@ -90,9 +91,9 @@ public class Enemy : MonoBehaviour
         {
             Collider2D[] playerInRange = Physics2D.OverlapCircleAll(attackGround.position, radiousInRange, playerLayer);
 
-            foreach (Collider2D collider in playerInRange)
+            foreach (var player in playerInRange)
             {
-                Health.instance.TakeDamage(10f);
+                player.GetComponent<Health>().TakeDamage(damaged);
             }
 
             coolDownTimer = attackTimer;

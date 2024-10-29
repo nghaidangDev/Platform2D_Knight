@@ -3,33 +3,16 @@ using UnityEngine.UI;
 
 public class HealthBarUI : MonoBehaviour
 {
-    public static HealthBarUI instance;
+    public PlayerHealth playerHealth;
+    public Slider slider;
 
-    [SerializeField] private Image imgHealthUI;
-
-    private void Awake()
+    private void Start()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
-        if (imgHealthUI != null)
-        {
-            UpdateHealthUI();
-        }
+        slider.maxValue = playerHealth.health;
     }
 
-    public void UpdateHealthUI()
+    private void Update()
     {
-        if (Health.instance != null)
-        {
-            float fillamount = Health.instance.currentHealth / Health.instance.startingHealth;
-            imgHealthUI.fillAmount = fillamount;
-        }
+        slider.value = playerHealth.health;
     }
 }

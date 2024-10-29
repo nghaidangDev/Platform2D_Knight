@@ -38,13 +38,9 @@ public class Traps : MonoBehaviour
 
         foreach (Collider2D collider in objectRange)
         {
-            if (Health.instance != null)
+            if (collider != null)
             {
-                Health.instance.TakeDamage(10f);
-            }
-            else
-            {
-                Debug.LogWarning("Health instance is not assigned.");
+                collider.GetComponent<PlayerHealth>().TakeDamage(15);
             }
         }
     }

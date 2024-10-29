@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -90,10 +90,17 @@ public class PlayerController : MonoBehaviour
             {
                 Collider2D[] enemyInRange = Physics2D.OverlapCircleAll(checkAttack.position, checkRadiousAttacked, enemyLayer);
 
-                foreach (Collider2D collider in enemyInRange)
+                foreach (var enemy in enemyInRange)
                 {
-                    Health.instance.TakeDamage(damaged);
-                    Debug.Log("Attack");
+                    Health enemyHealth = enemy.GetComponent<Health>();
+                    if (enemyHealth != null) // Kiểm tra nếu có Health component
+                    {
+                        enemyHealth.TakeDamage(damaged);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Enemy does not have a Health component attached.");
+                    }
                 }
 
                 coolDownTimer = attackTimer;
@@ -111,6 +118,8 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+
 
     private void Flip()
     {

@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class Saw : MonoBehaviour
 {
-    [SerializeField] private float damage;
+    [SerializeField] private int damage;
+    private Health health;
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Health.instance.TakeDamage(damage);
+            if (collision !=  null)
+            {
+                collision.GetComponent<PlayerHealth>().TakeDamage(damage);
+            }
         }
     }
 }
