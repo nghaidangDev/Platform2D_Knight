@@ -1,7 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -9,7 +6,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float radiousInRange;
     [SerializeField] private float attackTimer;
-    [SerializeField] private float damaged;
+    [SerializeField] private int damaged;
 
     private float nearDistance = 0.2f;
     private float coolDownTimer = 0f;
@@ -30,9 +27,7 @@ public class Enemy : MonoBehaviour
     private void Start()
     {
         GenerateRandomPoints();
-
         target = pointB;
-
         anim = GetComponent<Animator>();
     }
 
@@ -67,18 +62,17 @@ public class Enemy : MonoBehaviour
         anim.SetBool("walk", isWalking);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
             isAttacking = true;
-            Attacking();
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
             isAttacking = false;
             coolDownTimer = 0f;
@@ -89,30 +83,34 @@ public class Enemy : MonoBehaviour
     {
         if (coolDownTimer <= 0)
         {
-            Collider2D[] playerInRange = Physics2D.OverlapCircleAll(attackGround.position, radiousInRange, playerLayer);
+            Collider2D playerInRange = Physics2D.OverlapCircle(attackGround.position, radiousInRange, playerLayer);
 
-            foreach (var player in playerInRange)
+            if (playerInRange != null)
             {
-                player.GetComponent<Health>().TakeDamage(damaged);
+                anim.SetTrigger("attack"); // Chỉ bắt đầu hoạt ảnh tấn công
             }
 
             coolDownTimer = attackTimer;
-            anim.SetBool("Attack", isAttacking);
         }
         else
         {
             coolDownTimer -= Time.deltaTime;
+        }
+    }
 
-            if (coolDownTimer <= 0)
-            {
-                coolDownTimer = 0;
-            }
+    // Phương thức này sẽ được gọi từ Animation Event
+    private void TriggerDamage()
+    {
+        Collider2D playerInRange = Physics2D.OverlapCircle(attackGround.position, radiousInRange, playerLayer);
+
+        if (playerInRange != null)
+        {
+            playerInRange.GetComponent<PlayerHealth>().TakeDamage(damaged);
         }
     }
 
     private void FLip()
     {
-        // Kiểm tra hướng của target so với vị trí hiện tại
         bool shouldFaceRight = target.x > transform.position.x;
 
         if (shouldFaceRight != isFacingRight)
@@ -127,12 +125,9 @@ public class Enemy : MonoBehaviour
     IEnumerator WaitForFlip()
     {
         isWalking = true;
-
         yield return new WaitForSeconds(2f);
-
         target = target == pointA ? pointB : pointA;
         FLip();
-
         isWalking = false;
     }
 

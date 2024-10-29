@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
 
     private bool isGrounded;
     private bool isFacingRight;
-    private bool canJumpDouble;
+    //private bool canJumpDouble;
     private bool canMove = true;
 
     [SerializeField] private Transform checkGround;
@@ -144,8 +144,8 @@ public class PlayerController : MonoBehaviour
 
     private void CheckJumpDouble()
     {
-        if (!isGrounded && Input.GetButtonDown("Jump"))
-            canJumpDouble = true;
+        //if (!isGrounded && Input.GetButtonDown("Jump"))
+            //canJumpDouble = true;
     }
 
     private void CheckAnyThing()

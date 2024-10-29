@@ -6,15 +6,36 @@ public class PlayerHealth : MonoBehaviour
 {
     public int health = 100;
 
+    public GameObject deathEffect;
+
+    private Animator anim;
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     public void TakeDamage(int damage)
     {
         health -= damage;
 
         if (health <= 0)
         {
-            health = 0;
-            //Die
-            Debug.Log("Die");
+            StartCoroutine(WaitPlayAnim());
         }
+    }
+
+    private void Die()
+    {
+        Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
+
+    IEnumerator WaitPlayAnim()
+    {
+        anim.SetTrigger("dead");
+        yield return new WaitForSeconds(2f);
+
+        Die();
     }
 }
