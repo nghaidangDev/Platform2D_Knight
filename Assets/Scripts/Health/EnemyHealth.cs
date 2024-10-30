@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerHealth : MonoBehaviour
+public class EnemyHealth : MonoBehaviour
 {
     public int health = 100;
 
@@ -21,7 +21,7 @@ public class PlayerHealth : MonoBehaviour
 
         if (health <= 0)
         {
-            StartCoroutine(WaitPlayAnim());
+            Die();
         }
         else if (health > 0)
         {
@@ -33,13 +33,5 @@ public class PlayerHealth : MonoBehaviour
     {
         Instantiate(deathEffect, transform.position, Quaternion.identity);
         Destroy(gameObject);
-    }
-
-    IEnumerator WaitPlayAnim()
-    {
-        anim.SetTrigger("dead");
-        yield return new WaitForSeconds(2f);
-
-        Die();
     }
 }

@@ -13,13 +13,5 @@ public class Health : MonoBehaviour
     public void TakeDamage(float _damaged)
     {
         currentHealth = Mathf.Clamp(currentHealth - _damaged, 0, startingHealth);
-
-        if (currentHealth > 0)
-        {
-            //anim hit
-        }else if (currentHealth == 0)
-        {
-            //anim dead
-        }
     }
 }

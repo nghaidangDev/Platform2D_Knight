@@ -6,16 +6,11 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     private float horizontal;
-    private float coolDownTimer = 0f;
-
 
     [SerializeField] private float speed;
     [SerializeField] private float forceJump;
-    [SerializeField] private float attackTimer;
-    [SerializeField] private float damaged;
 
     [SerializeField] private float checkRadiousGrounded;
-    [SerializeField] private float checkRadiousAttacked;
 
     private bool isGrounded;
     private bool isFacingRight;
@@ -23,7 +18,6 @@ public class PlayerController : MonoBehaviour
     private bool canMove = true;
 
     [SerializeField] private Transform checkGround;
-    [SerializeField] private Transform checkAttack;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask enemyLayer;
 
@@ -37,12 +31,10 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
-
         if (rb == null) Debug.LogError("Rigidbody2D is missing!");
         if (anim == null) Debug.LogError("Animator is missing!");
         if (audioManager == null) Debug.LogError("AudioManager is missing!");
-        if (checkGround == null || checkAttack == null) Debug.LogError("CheckGround or CheckAttack is missing!");
-
+        if (checkGround == null) Debug.LogError("CheckGround is missing!");
     }
 
 
@@ -50,7 +42,6 @@ public class PlayerController : MonoBehaviour
     {
         CanMovement();
         CanJump();
-        CanAttack();
         UpdateAnimations();
         CheckAnyThing();
         Flip();
@@ -81,45 +72,6 @@ public class PlayerController : MonoBehaviour
             FindObjectOfType<AudioManager>().Play("Jump");
         }
     }
-
-    private void CanAttack()
-    {
-        if (coolDownTimer <= 0)
-        {
-            if (Input.GetMouseButton(0) && isGrounded)
-            {
-                Collider2D[] enemyInRange = Physics2D.OverlapCircleAll(checkAttack.position, checkRadiousAttacked, enemyLayer);
-
-                foreach (var enemy in enemyInRange)
-                {
-                    Health enemyHealth = enemy.GetComponent<Health>();
-                    if (enemyHealth != null) // Kiểm tra nếu có Health component
-                    {
-                        enemyHealth.TakeDamage(damaged);
-                    }
-                    else
-                    {
-                        Debug.LogWarning("Enemy does not have a Health component attached.");
-                    }
-                }
-
-                coolDownTimer = attackTimer;
-                anim.SetTrigger("attack");
-                FindObjectOfType<AudioManager>().Play("Attack");
-            }
-        }
-        else
-        {
-            coolDownTimer -= Time.deltaTime;
-
-            if (coolDownTimer <= 0)
-            {
-                coolDownTimer = 0;
-            }
-        }
-    }
-
-
 
     private void Flip()
     {
@@ -156,7 +108,10 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawSphere(checkGround.position, checkRadiousGrounded);
+    }
 
-        Gizmos.DrawSphere(checkAttack.position, checkRadiousAttacked);
+    public bool IsCanAttack()
+    {
+        return horizontal == 0 && isGrounded;
     }
 }

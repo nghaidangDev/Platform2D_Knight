@@ -12,25 +12,28 @@ public class EnemtPatrol : MonoBehaviour
     [SerializeField] private float idleDuration;
 
     private Vector3 initScale;
-
     private bool movingLeft;
-
     private float idleTimer;
 
     [SerializeField] Animator anim;
 
     private void Awake()
     {
-        initScale = enemy.localScale;
+        initScale = enemy != null ? enemy.localScale : Vector3.one;
     }
 
     private void OnDisable()
     {
-        anim.SetBool("walk", false);
+        if (anim != null)
+        {
+            anim.SetBool("walk", false);
+        }
     }
 
     private void Update()
     {
+        if (enemy == null || leftEdge == null || rightEdge == null) return;
+
         if (movingLeft)
         {
             if (enemy.position.x >= leftEdge.position.x)
@@ -57,7 +60,11 @@ public class EnemtPatrol : MonoBehaviour
 
     private void DirectionChange()
     {
-        anim.SetBool("walk", false);
+        if (anim != null)
+        {
+            anim.SetBool("walk", false);
+        }
+
         idleTimer += Time.deltaTime;
 
         if (idleTimer > idleDuration)
@@ -69,10 +76,15 @@ public class EnemtPatrol : MonoBehaviour
     private void MoveInDirection(int _direction)
     {
         idleTimer = 0;
-        anim.SetBool("walk", true);
+        if (anim != null)
+        {
+            anim.SetBool("walk", true);
+        }
 
-        enemy.localScale = new Vector3(Mathf.Abs(initScale.x) * _direction, initScale.y, initScale.z);
-
-        enemy.position = new Vector3(enemy.position.x + Time.deltaTime * _direction, enemy.position.y, enemy.position.z);
+        if (enemy != null)
+        {
+            enemy.localScale = new Vector3(Mathf.Abs(initScale.x) * _direction, initScale.y, initScale.z);
+            enemy.position = new Vector3(enemy.position.x + Time.deltaTime * _direction * speed, enemy.position.y, enemy.position.z);
+        }
     }
 }
