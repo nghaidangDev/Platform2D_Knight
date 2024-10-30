@@ -6,6 +6,6 @@ public class Bullet : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        FindObjectOfType<ObjectPooling>().ReturnObject(gameObject);
+        FindObjectOfType<ObjectPooling>().ReturnObject(gameObject); 
     }
 }
