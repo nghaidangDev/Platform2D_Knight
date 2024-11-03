@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
     public int health = 100;
 
     public GameObject deathEffect;
+    public GameObject deathCV;
 
     private Animator anim;
 
@@ -38,8 +40,10 @@ public class PlayerHealth : MonoBehaviour
     IEnumerator WaitPlayAnim()
     {
         anim.SetTrigger("dead");
+        deathCV.SetActive(true);
+        Die();
         yield return new WaitForSeconds(2f);
 
-        Die();
+        SceneManager.LoadScene(0);
     }
 }

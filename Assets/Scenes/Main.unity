@@ -5845,7 +5845,7 @@ MonoBehaviour:
     loop: 1
     source: {fileID: 0}
   - name: Walk
-    clip: {fileID: 8300000, guid: f88de2aff4586cc4392b08a0791c5198, type: 3}
+    clip: {fileID: 8300000, guid: b9c184be8da9f3b4d93b294d9a8da105, type: 3}
     volume: 1
     pitch: 1
     loop: 0
